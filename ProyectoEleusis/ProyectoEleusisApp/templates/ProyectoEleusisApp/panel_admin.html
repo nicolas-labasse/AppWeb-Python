@@ -1,0 +1,507 @@
+{% extends 'ProyectoEleusisApp/header.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block contenidoPagina %}
+<section>
+    <div class="container-fluid mt-5">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 mt-2">
+                <nav>
+                    <div class="nav nav-tabs mb-5" id="nav-tab" role="tablist">
+                        <a href="{% url 'panel_admin' 'eventos' %}" class="nav-link {% if tab == 'eventos' %}active{% endif %}" >Eventos</a>
+                        <a href="{% url 'panel_admin' 'materias' %}" class="nav-link {% if tab == 'materias' %}active{% endif %}">Materias</a>
+                        <a href="{% url 'panel_admin' 'inscriptos' %}" class="nav-link {% if tab == 'inscriptos' %}active{% endif %}">Inscriptos</a>   
+                    </div>
+                </nav>
+                {% if tab == 'eventos' %}
+                <div class="d-flex row justify-content-between">
+                    <div class="col-md-6 col-12">
+                        <a href="{% url 'crear_evento' %}" class="btn btn-dark mb-3" data-mdb-toggle="tooltip"
+                            data-mdb-placement="top" title="Crear evento">Crear Nuevo Evento</a>
+                    </div>
+                    <div class="col-md-6 col-12 mb-4">
+                        <form method="GET" enctype="multipart/form-data">
+                            
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" id="buscar" name="buscar" class="form-control"
+                                        placeholder="Buscar" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive-lg">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Tema</th>
+                                <th scope="col">Lugar</th>
+                                <th scope="col">Disertantes</th>
+                                <th scope="col">Valor</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Hora</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Promocion</th>
+                                <th scope="col">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        {% if buscador %}
+                        {% for resultado in buscador %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.id}}</td> 
+                                <td>{{resultado.nombre}}</td> 
+                                <td>{{resultado.tema}}</td>
+                                <td>{{resultado.lugar_inicio}}</td>
+                                <td>{{resultado.disertantes}}</td>
+                                <td>{{resultado.precio}}</td>
+                                <td>{{resultado.fecha_inicio}}</td>
+                                <td>{{resultado.hora_inicio}}</td>
+                                <td>
+                                    {% if resultado.imagen is null %}
+                                    <i style="color:red" class="fa-solid fa-xmark"></i>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if resultado.propaganda is False %}
+                                    <a href="{% url 'cambiar_estado' resultado.id %}"><i style="color:red" class="fa-solid fa-xmark"></i></a>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'detalle_evento' resultado.id %}"  data-mdb-toggle="tooltip" data-mdb-placement="top" title="Ver detalle"><i style="color: blue;" class="fa-solid fa-eye"></i></a>
+                                    <a href="{% url 'crear_lugar' resultado.id  %}"  data-mdb-toggle="tooltip" data-mdb-placement="top" title="Agregar lugar y fecha"><i style="color:orange" class="fa-solid fa-circle-plus"></i></a>
+                                    <a href="{% url 'editar_evento' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Editar evento"><i style="color:green" class="fa-solid fa-pencil"></i></a>                                
+                                    <a href="{% url 'eliminar_evento' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Borrar evento"><i style="color:red" class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+                        <div class="m-5">
+                            {% include 'ProyectoEleusisApp/paginator_buscar.html' %}
+                        </div>
+                            {% else %}
+                        <tbody>
+                            <tr>
+                                {% for obj in curso %}
+                                <td>{{obj.id}}</td>
+                                <td>{{obj.nombre}}</td>
+                                <td>{{obj.tema}}</td>
+                                <td>{{obj.lugar_inicio}}</td>
+                                <td>{{obj.disertantes}}</td>
+                                <td>{{obj.precio}}</td>
+                                <td>{{obj.fecha_inicio}}</td>
+                                <td>{{obj.hora_inicio}}</td>
+                                <td>
+                                    {% if obj.imagen is null %}
+                                    <i style="color:red" class="fa-solid fa-xmark"></i>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if obj.propaganda is False %}
+                                    <a href="{% url 'cambiar_estado' obj.id %}"><i style="color:red" class="fa-solid fa-xmark"></i></a>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'detalle_evento' obj.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Ver detalle"><i
+                                            style="color: blue;" class="fa-solid fa-eye"></i></a>
+                                    <a href="{% url 'crear_lugar' obj.id %}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="top" title="Agregar lugar y fecha"><i style="color:orange"
+                                            class="fa-solid fa-circle-plus"></i></a>
+                                    <a href="{% url 'editar_evento' obj.id %}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="top" title="Editar evento"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eliminar_evento' obj.id %}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="top" title="Borrar evento"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="m-5">
+                    {% include 'ProyectoEleusisApp/paginator_curso.html' %}
+                </div>
+                {% endif %}       
+                <div class="d-flex row justify-content-between">
+                   
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Hora</th>
+                                <th scope="col">Acciones</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                {% for obj in espacio %}
+                                <td>{{obj.evento_id}}</td>
+                                <td>{{obj.nombre}}</td>
+                                <td>{{obj.fecha}}</td>
+                                <td>{{obj.hora}}</td>
+                                <td>
+                                    <a href="{% url 'editar_lugar' obj.id %}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="top" title="Editar lugar"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eliminar_lugar' obj.id %}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="top" title="Borrar lugar"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% elif tab == 'materias' %}
+                <div class="d-flex row justify-content-between">
+                    <div class="col-md-6 col-12">
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#crear" class="btn btn-dark mb-3">Crear
+                            Nueva Materia</a>
+                    </div>
+                    <div class="modal fade" id="crear" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Crear Materia</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="mx-5 my-5" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    {{ form|crispy }}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <input type="submit" class="btn btn-outline-dark" style="width: 80%;"
+                                                name="enviar" value="Registrar">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 mb-4">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" id="buscar" name="buscar" class="form-control"
+                                        placeholder="Buscar" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Posicion</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        {% if buscador %}
+                        {% for resultado in buscador %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.description}}</td>
+                                <td>{{resultado.posicion}}</td>
+                                <td>{{resultado.fecha}}</td>
+                                <td>
+                                    <a href="{% url 'editar_materia' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Editar Materia"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eliminar_materia' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Eliminar Materia"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            {% for resultado in mat %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.description}}</td>
+                                <td>{{resultado.posicion}}</td>
+                                <td>{{resultado.fecha}}</td>
+                                <td>
+                                    <a href="{% url 'editar_materia' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Editar Materia"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eliminar_materia' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Eliminar Materia"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="m-5">
+                    {% include 'ProyectoEleusisApp/paginator_materias.html' %}
+                </div>
+                {% elif tab == 'inscriptos' %}
+                <div class="d-flex row justify-content-between">
+                    <div class="col-md-6 col-12 mb-4">
+                        <form method="GET" enctype="multipart/form-data">
+                            
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" id="buscar" name="buscar" class="form-control"
+                                        placeholder="Buscar" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Evento</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Fecha inscripcion</th>
+                                <th scope="col">Comprobante de pago</th>
+                                <th scope="col">Aprobado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        {% if buscador %}
+                        {% for resultado in buscador %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.fk_evento}}</td>
+                                <td>{{resultado.nombre}}</td>
+                                <td>{{resultado.email}}</td>
+                                <td>{{resultado.fecha_inscripcion}}</td>
+                                <td>                
+                                    <a href="{{resultado.comprobante.url}}"  download="{{resultado.comprobante.url}}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Descargar Comprobante"><i style="color:orange" class="fa-solid fa-angles-down me-3"></i></a>
+                                    <a href="{{resultado.comprobante.url}}"  data-mdb-toggle="tooltip" data-mdb-placement="top" title="Ver detalle"><i style="color: blue;" class="fa-solid fa-eye"></i></a>
+                                </td>
+                                <td>
+                                    {% if resultado.aprobado is False %}
+                                    <a href="{% url 'cambiar_aprobado' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Pasar a aprobado"><i style="color:red" class="fa-solid fa-xmark"></i></a>
+                                    {% else %}
+                                    <a href="{% url 'cambiar_desaprobado' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Pasar a desaprobado"><i style="color:green" class="fa-solid fa-check"></i></a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'eliminar_inscripto' resultado.id %}"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                        <div class="m-5">
+                            {% include 'ProyectoEleusisApp/paginator_buscar.html' %}
+                        </div>
+                            {% else %}
+                            {% for resultado in inscriptos %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.fk_evento}}</td>
+                                <td>{{resultado.nombre}}</td>
+                                <td>{{resultado.email}}</td>
+                                <td>{{resultado.fecha_inscripcion}}</td>
+                                <td>              
+                                    <a  href="{{resultado.comprobante.url}}"  download="{{resultado.comprobante.url}}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Descargar Comprobante"><i style="color:orange" class="fa-solid fa-angles-down me-3"></i></a>
+                                    <a href="{{resultado.comprobante.url}}"  data-mdb-toggle="tooltip" data-mdb-placement="top" title="Ver detalle"><i style="color: blue;" class="fa-solid fa-eye"></i></a>
+                                </td>
+                                <td>
+                                    {% if resultado.aprobado is False %}
+                                    <a href="{% url 'cambiar_aprobado' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Pasar a aprobado"><i style="color:red" class="fa-solid fa-xmark"></i></a>
+                                    {% else %}
+                                    <a href="{% url 'cambiar_desaprobado' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Pasar a desaprobado"><i style="color:green" class="fa-solid fa-check"></i></a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'eliminar_inscripto' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Eliminar Inscripto"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="m-5">
+                    {% include 'ProyectoEleusisApp/paginator_materias.html' %}
+                </div>
+                {% endif %}
+                        
+                {% else %}
+                <div class="d-flex row justify-content-between">
+                    <div class="col-md-6 col-12">
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#crear" class="btn btn-dark mb-3">Crear
+                            Nuevo Integrante</a>
+                    </div>
+                    <div class="modal fade" id="crear" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Crear Integrante</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="mx-5 my-5" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    {{ form|crispy }}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <input type="submit" class="btn btn-outline-dark" style="width: 80%;"
+                                                name="enviar" value="Registrar">
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 mb-4">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" id="buscar" name="buscar" class="form-control"
+                                        placeholder="Buscar" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Puesto</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        {% if buscador %}
+                        {% for resultado in buscador %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.nombre}}</td>
+                                <td>{{resultado.cargo}}</td>
+                                <td>
+                                    {% if resultado.imagen is null %}
+                                    <i style="color:red" class="fa-solid fa-xmark"></i>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'editar_integrante'  resultado.id  %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Editar Integrante"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eleminar_integrante' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Eliminar Integrante"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            {% for resultado in personas %}
+                        <tbody>
+                            <tr>
+                                <td>{{resultado.nombre}}</td>
+                                <td>{{resultado.cargo}}</td>
+                                <td>
+                                    {% if resultado.imagen is null %}
+                                    <i style="color:red" class="fa-solid fa-xmark"></i>
+                                    {% else %}
+                                    <i style="color:green" class="fa-solid fa-check"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'editar_integrante'  resultado.id  %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Editar Integrante"><i style="color:green"
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="{% url 'eleminar_integrante' resultado.id %}" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Eliminar Integrante"><i style="color:red"
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="m-5">
+                    {% include 'ProyectoEleusisApp/paginator_integrantes.html' %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

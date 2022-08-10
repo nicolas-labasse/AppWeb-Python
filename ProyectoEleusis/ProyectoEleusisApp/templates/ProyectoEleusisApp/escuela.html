@@ -1,0 +1,99 @@
+{% extends 'ProyectoEleusisApp/header.html' %}
+{% load static %}
+
+{% block tituloPagina %}
+
+{% endblock %}
+
+{% block contenidoPagina %}
+<section id="inicio">
+  <div class="card text-start text-white bg-marronclaro" style="border: 0px;">
+      <img src="{{url}}" class="card-img cropped2" alt="es una imagen que representa a la escuela eleusis">
+      <div class="card-img-overlay ps-md-5 pt-5">
+          <div class="col-12 col-md-5 text-md-start text-center">
+            <h1 class="card-title h3">Escuela Elusis</h1>
+            <p class="card-text h1">UNA AMPLIA TRAYECTORIA FORMANDO</p>
+          </div>  
+          <div class="text-center mt-5 pt-5">
+            <a href="{% url 'contacto' %}" class="btn bg-btn-celeste-claro text-white">Contactanos</a>
+          </div>     
+      </div>
+    </div>
+</section>
+
+
+<section class="bg-escuela">
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1 class="text-center mt-5 titulo">¿Qué es el trabajo Biográfico?</h1>
+      <div class="col-7">
+        <p class="text-center mt-3 parrafo">El trabajo con la propia biografía ilumina las preguntas acerca del sentido de las
+          crisis individuales, incitando a transformarlas para
+          devenir de un ser humano, que las riendas de su propia vida.
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center pb-5">
+      <div class="col-12 col-md-4 mt-5">
+        <p class="card-text parrafo">El trabajo biográfico nació en Europa occidental y centro Europa en los 70, no es una
+          psico-terapia ni una nueva orientación
+          psicológica, el trabajo biográfico se caracteriza como un encuentro con otro ser humano gracias al cual hay
+          una clarificación y comprensión
+          del sentido de la propia vida.
+        </p>
+        <p class="card-text parrafo">Lievegoed fue el padre del dicho enfoque sobre el cual dijo:-<<  <b>la biografía es una sinfonía que
+            cada ser humano compone>>.</b>
+        </p>
+      </div>
+      <div class="col-12 col-md-4 mt-5">
+        <p class="card-text parrafo">Y esa sinfonía trata de ser desentrañada desde la conciencia. Con ella se hace un recorrido
+          por los acontecimientos vividos a lo largo
+          de una vida, recordando y tratando de encontrar el leitmotiv o el hilo conductor de la vida a través de la
+          comprensión de los distintos sucesos,
+          experiencias, personas con las que nos hemos relacionado: <b>El trabajo biográfico se basa en el trabajo del Yo
+          hacia el futuro.</b>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="card text-center text-white bg-celeste-claro pb-3">
+    <div class="card-body row d-flex justify-content-center m-0 p-0" style="height:200px;">
+      <div class="col-12 col-md-7">
+        <h1 class="card-title mt-3">ʻʻ LA ESCUELA PARTICIPA DEL FÓRUM INTERNACIONAL DE ESCUELAS BIOGRÁFICAS ANTROPOSOFÍCAS ˮ</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-marron">
+  <div class="container">
+    <div class="row justify-content-around align-items-center pb-5">
+      <div class="col-12 col-md-5 mt-5">
+        <h1 class="text-white h5">El equipo docente esta configurado
+          multidisciplinariamente por docentes de la escuela, docentes invitados
+          y docentes convocados de escuelas del mundo que fraternalmente
+          integramos.
+        </h1>
+        <div class="text-center mt-5">
+          <a href="/static/ProyectoEleusisApp/descarga/Escuela Eleusis - Formacion.pdf" download="Escuela Eleusis - Formacion.pdf" class="text-white"><i class="fa-solid fa-file-pdf h1"></i>
+            <div>
+                <small class="text-white">Descarga el programa</small>
+            </div>
+        </a>
+        </div>
+
+      </div>
+      <div class="col-12 col-md-4 mt-5">
+        <img src="{{url_escuela}}" class="card-img-top wraper "
+          alt="imagen que muestra como es la escuela elusis por dentro" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

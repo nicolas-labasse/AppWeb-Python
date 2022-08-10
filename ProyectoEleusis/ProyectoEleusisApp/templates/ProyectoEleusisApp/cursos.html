@@ -1,0 +1,130 @@
+{% extends 'ProyectoEleusisApp/header.html' %}
+{% load static %}
+
+
+{% block contenidoPagina %}
+<section id="inicio">
+  <div class="card bg-marronclaro text-white">
+    <img src="{{promocion.imagen.url}}" class="card-img cropped1"
+      alt="imagen que respresenta el ultimo evento que se va a dictar">
+    <div class="card-img-overlay">
+      <div class="col-12 col-md-4">
+        <h1 class="card-title"><b>#{{promocion.nombre}}</b></h1>
+        <h2 class="card-text">{{promocion.tema}}</h2>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="container">
+    <h1 class="text-center mt-4 cursosletra">CURSOS, SEMINARIOS y WORKSHOPS</h1>
+    <div class="row row-cols-1  row-cols-md-2 row-cols-lg-3 g-4 mt-md-5 mb-md-5">
+
+      {% for resultado in curso %}
+      <div class="col">
+        <a href="{% url 'detalle_evento' resultado.id %}">
+          <div class="card h-100 sombrear evento">
+            <img src="{{resultado.imagen.url}}" class="card-img-top"
+              alt="imagen sobre el evento que se esta mostrando" />
+            <div class="card-body">
+              <h5 class="card-title">
+                #{{resultado.nombre}}</h5>
+              <p class="card-text">
+                <b>TEMA: </b> {{resultado.tema}}
+              </p>
+              <div class="d-flex">
+                <div class="col-3">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>LUGAR: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{resultado.lugar_inicio}}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>FECHA: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{resultado.fecha_inicio}}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>HORA: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{resultado.hora_inicio}} (BS AS)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {% for obj in data %}
+              {% if obj.evento == resultado.id %}
+              <div class="d-flex">
+                <div class="col-3">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>LUGAR: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{obj.nombre}}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>FECHA: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{obj.fecha}}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12">
+                    <p class="card-text">
+                      <b>HORA: </b>
+                    </p>
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text">
+                      {{obj.hora}} (BS AS)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-6 text-center">
+      <a href="{{numero}}" class="btn bg-btn-celeste-claro text-white px-3 px-md-5 boton mt-3">Ver Mas</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

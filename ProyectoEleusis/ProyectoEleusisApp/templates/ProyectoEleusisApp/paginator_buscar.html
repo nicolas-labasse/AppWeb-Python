@@ -1,0 +1,47 @@
+
+{% if paginator.num_pages > 1%}
+<div class="d-flex justify-content-center">
+    <ul class="pagination">
+        {% if buscador.has_previous %}
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ buscador.previous_page_number }}&buscar={{buscar}}#pagtable">Anterior</a></li>
+        {% endif %}
+        {% for page in paginator.page_range %}
+            {% if forloop.last and page != buscador.number and paginator.num_pages > 7 %} 
+                {% if buscador.next_page_number != paginator.num_pages%}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ buscador.number | add:1}}&buscar={{buscar}}#pagtable">...</a>
+                </li>
+                {% endif %}
+            <li class="page-item">
+                    <a class="page-link" href="?page={{paginator.num_pages}}&buscar={{buscar}}#pagtable">{{paginator.num_pages}}</a>
+            </li>
+            {% endif %}
+            {% if page == buscador.number and page > 7 %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page | add:-1 }}&buscar={{buscar}}#pagtable">...</a>
+            </li>    
+            {% endif %}
+            {% if page < 7 or page == buscador.number %}
+            <li class="page-item {% if page == buscador.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page }}&buscar={{buscar}}#pagtable">{{ page }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+        {% if buscador.has_next %}
+            <li class="page-item d-none d-sm-block">
+                <a class="page-link" href="?page={{ buscador.next_page_number }}&buscar={{buscar}}#pagtable">Siguiente</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="d-flex justify-content-center d-sm-none">            
+    {% if buscador.has_previous %}
+        <span class="page-item"><a  class="page-link" href="?page={{ buscador.previous_page_number }}&buscar={{buscar}}#pagtable">Anterior</a></span>
+    {% endif %}
+    {% if buscador.has_next %}
+        <span class="page-item"><a class="page-link" href="?page={{ buscador.next_page_number }}&buscar={{buscar}}#pagtable">Siguiente</a></span>
+    {% endif %}
+    <br>
+    <br>
+</div>
+{% endif %}

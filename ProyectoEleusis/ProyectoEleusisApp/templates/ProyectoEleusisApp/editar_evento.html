@@ -1,0 +1,100 @@
+{% extends 'ProyectoEleusisApp/header.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block contenidoPagina %}
+
+
+<section class="fondo">
+  <div class="container-fluid">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-12 col-md-8 pb-5 pt-3 ">
+        <div class="card shadow-lg">
+          <div class="card-body">
+              <a href="{% url 'panel_admin' 'eventos' %}" class="d-flex">
+                <i class="fa-solid fa-arrow-left h2 ms-3 text-dark"></i>
+              </a>
+              <div class="d-flex justify-content-center align-items-center">
+              <h1 class="h3 text-start mt-5">Editar Evento</h1>            
+            </div>
+            <form class="mx-5 my-5" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row mb-2">
+                <div class="col">
+                  <div class="form-outline">
+                    {{form.nombre|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-outline">
+                    {{form.disertantes|as_crispy_field}}
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <div class="form-outline">
+                    {{form.tema|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-outline">
+                    {{form.lugar_inicio|as_crispy_field}}
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <div class="form-outline">
+                    {{form.precio|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-outline">
+                    {{form.precio_dolar|as_crispy_field}}
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <div class="form-outline">
+                    {{form.fecha_inicio|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-outline">
+                    {{form.hora_inicio|as_crispy_field}}
+                  </div>
+                </div>
+              </div>
+              {% for resultado in eve1 %}
+              <div class="form-outline mb-4">
+                <input  id="form4Example1" class="form-control" name="fecha" value="{{resultado.fecha}}" />
+              </div>
+              <div class="form-outline mb-4">
+                <input  id="form4Example1" class="form-control" name="nombre" value="{{resultado.nombre}}" />
+              </div>
+              <div class="text-center mb-2">
+                <input type="submit" class="btn btn-outline-primary" value="Editar Evento">
+              </div>
+                {% endfor %}
+              <div class="form-outline">
+                {{form.imagen|as_crispy_field}}
+              </div>
+              <div class="form-outline">
+                {{form.descripcion|as_crispy_field}}
+              </div>
+              <div class="text-center">
+                <input type="submit" class="btn btn-outline-primary" name="crear" value="Editar Evento">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

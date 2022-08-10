@@ -1,0 +1,127 @@
+{% extends 'ProyectoEleusisApp/header.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block contenidoPagina %}
+<section id="inicio">
+    <div class="card bg-dark text-white">
+        <img src="{{curso.imagen.url}}" class="card-img cropped1"
+            alt="esta imagen muestra una foto representativa del evento seleccionado">
+        <div class="card-img-overlay fondosombra1">
+            <div class="col-12 col-md-4">
+                <h1 class="card-title"><b>#{{curso.nombre}}</b></h1>
+                <h2 class="card-text">{{curso.tema}}</h2>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <h1 class="mb-4 text-start">#{{curso.nombre}}</h1>
+            <div class="col-12 col-md-6 text-center text-md-start">
+                <p><b>TEMA:</b> {{curso.tema}}</p>
+                <hr style="width: 50%;">
+                <p><b>FECHA:</b> {{curso.fecha_inicio}}</p>
+                <p><b>HORA:</b> {{curso.hora_inicio}} (BS AS)</p>
+                <p><b>LUGAR:</b> {{curso.lugar_inicio}}</p>
+                <hr style="width: 50%;">
+                {% for obj in espacio %}
+                <p><b>FECHA:</b> {{obj.fecha}}</p>
+                <p><b>HORA:</b> {{obj.hora}} (BS AS)</p>
+                <p><b>LUGAR:</b> {{obj.nombre}}</p>
+                <hr style="width: 50%;">
+                {% endfor %}
+            </div>
+            <div class="col-12 col-md-6 text-center text-md-start">
+                <p><b>DESCRIPCIÓN:</b> {{curso.descripcion}}</p>
+                <p><b>DISERTANTES:</b> {{curso.disertantes}}</p>
+                <p><b>VALOR:</b> $ {{curso.precio}}</p>
+                <p><b>VALOR:</b> US$ {{curso.precio_dolar}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% if anular %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 pt-4 pb-4">
+                <h1 class="h2">Inscribite a {{curso.tema}}</h1>
+                <p>Podes inscribirte a {{curso.tema}} mediante alguno de nuestros metodos de pago, abajo tenes los datos necesarios para hacerlo a traves 
+                    de transferencia bancaria o por PAYPAL.</p>
+                    <hr style="width: 50%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 pt-4 pb-4">
+                <h1 class="h2">Datos para transferencia</h1>
+                <p><b>BANCO:</b> Banco Ciudad de Buenos Aires </p>
+                <p><b>CBU:</b> 1234345456892 123</p>
+                <p><b>ALIAS:</b> RATA.RULO.ROQUE</p>
+                <p><b>NOMBRE:</b> XXXXX</p>
+                <div class="col-6 text-center">
+                    <a type="button" data-bs-toggle="modal" data-bs-target="#crear"
+                        class="btn btn-primary px-4 mt-4 mb-5">Inscripcion por Transferencia</a>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <img src="{{url}}" class="card-img" alt="...">
+                <a href="" class="btn btn-primary mt-4 mb-5" style="width: 100%;">PAYPAL</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="crear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inscribirse</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mx-5 my-5" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row mb-2">
+                        <div class="col">
+                            <div class="form-outline">
+                                {{ form|crispy }}
+
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{curso.id}}">
+                    </div>
+                    <div class="row justify-content-center">
+                        <input type="submit" class="btn btn-outline-dark" style="width: 80%;" name="enviar"
+                            value="Inscribirse">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 pt-4 pb-4">
+                <h1 class="h2">Lo sentimos!</h1>
+                <p>Ya paso la fecha para poder inscribirte a {{curso.tema}}, pero no te preocupes que proximamente habra mas.</p>
+                    <hr style="width: 50%;">
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
